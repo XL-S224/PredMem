@@ -1,0 +1,50 @@
+name: dplm21-inverse_folding-cameo2022-vanilla
+task: inverse_folding
+output: outputs/dplm21/inverse_folding/cameo2022/vanilla
+model:
+  family: dplm21
+  checkpoint: airkingbd/dplm2_bit_650m
+memory:
+  enabled: false
+  lambda: 0.01
+  k: 3
+  tracks:
+  - sequence
+  interface: post_ln
+  schedule: static
+guidance:
+  enabled: false
+  sequence: 2.0
+  structure: 1.5
+decoding:
+  order: synchronous
+  steps: 8
+  unmasking: stochastic1.0
+  remask: true
+  temperature:
+    start: 0.1
+    end: 0.0
+    anneal: true
+sampling:
+  lengths:
+  - 100
+  - 200
+  - 300
+  - 400
+  - 500
+  per_length: 100
+  per_motif: 100
+  batch_size: 1
+dataset:
+  name: cameo2022
+  fasta: data/cameo2022/struct.fasta
+  reference_dir: data/cameo2022/pdb
+  reference_pickle_dir: data/cameo2022/preprocessed
+  chain: detect
+  motif_dir: data/scaffolding_pdbs/ori_pdbs
+  motif_aa: data/scaffolding_pdbs/aa_seq.fasta
+  motif_structure: data/scaffolding_pdbs/struct_seq.fasta
+diagnostics:
+  per_step: false
+  save_terminal_tokens: true
+extends: ../../../../base.yaml

@@ -1,0 +1,79 @@
+name: paper-joint
+task: joint
+output: outputs/example
+model:
+  family: esm3
+  checkpoint: esm3-open
+memory:
+  enabled: true
+  summary: topk
+  lambda: 0.3
+  k: 3
+  tracks:
+  - sequence
+  - structure
+  interface: token_embedding
+  schedule: static
+guidance:
+  enabled: true
+  sequence: 2.0
+  structure: 3.0
+decoding:
+  order: synchronous
+  steps: length
+  unmasking: stochastic
+  remask: true
+  temperature:
+    start: 1.0
+    end: 0.0
+    anneal: true
+sampling:
+  seeds: [42]
+  lengths:
+  - 100
+  - 200
+  - 300
+  - 400
+  - 500
+  per_length: 100
+  per_motif: 100
+  batch_size: 1
+dataset:
+  name: cameo2022
+  fasta: data/cameo2022/aatype.fasta
+  reference_dir: data/cameo2022/pdb
+  reference_pickle_dir: data/cameo2022/preprocessed
+  chain: detect
+  limit: null
+  motif_variants: []
+  motif_spans: configs/motif-reference-spans.yaml
+  motif_dir: data/scaffolding_pdbs/ori_pdbs
+  motif_aa: data/scaffolding_pdbs/aa_seq.fasta
+  motif_structure: data/scaffolding_pdbs/struct_seq.fasta
+runtime:
+  environment:
+    HF_HOME: ${PM_HF_HOME:-.cache/huggingface}
+    TORCH_HOME: ${PM_TORCH_HOME:-.cache/torch}
+    HF_HUB_OFFLINE: '0'
+    TRANSFORMERS_OFFLINE: '0'
+diagnostics:
+  per_step: false
+  save_terminal_tokens: true
+evaluation:
+  after_generation: false
+  python: ${PM_EVAL_PYTHON:-python}
+  refold_checkpoint: facebook/esmfold_v1
+  foldseek: ${PM_FOLDSEEK:-foldseek}
+  foldseek_version: null
+  foldseek_sha256: null
+  foldseek_arguments:
+  - --alignment-type
+  - '1'
+  - --cov-mode
+  - '0'
+  - --min-seq-id
+  - '0'
+  - --tmscore-threshold
+  - '0.5'
+  - --threads
+  - '4'
