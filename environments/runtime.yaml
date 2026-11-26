@@ -1,0 +1,26 @@
+schema_version: 1
+provider: linux_cuda
+mode: warm_reuse
+cuda: '12.1'
+models:
+  esm3:
+    python: '3.12'
+    torch: '2.3.1+cu121'
+    lock: environments/esm3-frozen.txt
+    source: upstream/esm
+    native_sampler_sha256: b4802e76fc3dc28873f6aa8184b62c7bd44bef973c1d13155749c6c687c050a4
+  dplm2:
+    python: '3.10'
+    torch: '2.2.0+cu121'
+    lock: environments/dplm2-frozen.txt
+    source: upstream/dplm
+  dplm21:
+    python: '3.10'
+    torch: '2.2.0+cu121'
+    lock: environments/dplm2-frozen.txt
+    source: upstream/dplm
+evaluation:
+  environment: dplm2
+  refolder: facebook/esmfold_v1
+  foldseek_version: 10.941cd33
+  historical_foldseek_linux_x86_sha256: ce5f08d8f1e15598f618ac6155a756608fe0939b9534e773b5b5472a74acb842

@@ -1,0 +1,7 @@
+recursive-include configs *.yaml
+recursive-include upstream *
+recursive-include docs *.md
+recursive-include assets *.png
+recursive-include scripts *.py
+recursive-include environments *.txt *.yaml *.md
+include LICENSE README.md run_PredMem.sh

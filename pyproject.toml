@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "predmem"
+version = "0.1.0"
+description = "PredMem for multimodal protein inference"
+requires-python = ">=3.10"
+dependencies = ["PyYAML==6.0.3"]
+[project.scripts]
+predmem = "PredMem.__main__:main"
+pm-inference = "PredMem.__main__:main"
+[tool.setuptools.packages.find]
+include = ["PredMem*"]
